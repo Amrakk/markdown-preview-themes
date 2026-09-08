@@ -28,21 +28,27 @@
         "Themes"
     ],
     "contributes": {
+        "commands": [
+            {
+                "command": "markdownPreviewThemes.selectTheme",
+                "title": "Markdown Preview Themes: Select Theme"
+            },
+            {
+                "command": "markdownPreviewThemes.changeThemesFolder",
+                "title": "Markdown Preview Themes: Change Themes Folder"
+            }
+        ],
         "configuration": {
             "title": "Markdown Preview Themes",
             "properties": {
                 "markdownPreviewThemes.theme": {
                     "type": "string",
                     "default": "vscode",
-                    "enum": [
-                        "vscode",
-                        "dracula"
-                    ],
-                    "description": "Theme used by the Markdown preview."
+                    "markdownDescription": "Theme used by the Markdown preview. Run **Markdown Preview Themes: Select Theme** to choose from built-in and custom themes."
                 },
                 "markdownPreviewThemes.themesFolder": {
                     "type": "string",
-                    "description": "Path to folder containing custom theme CSS files. The extension will load all .css files from this folder.",
+                    "description": "Path to a folder containing custom theme CSS files. Use the Markdown Preview Themes: Change Themes Folder command to select it.",
                     "scope": "window"
                 }
             }

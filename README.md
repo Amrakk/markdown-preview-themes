@@ -4,7 +4,9 @@ Customize VS Code's built-in Markdown preview with different themes. Switch betw
 
 ## Usage
 
-Open VS Code settings and set your preferred theme:
+Run **Markdown Preview Themes: Select Theme** from the Command Palette and choose a theme.
+
+You can also set the theme name directly:
 
 ```json
 {
@@ -20,14 +22,14 @@ Add your own CSS themes by pointing to a folder:
 
 1. Create a folder with your custom theme CSS files (e.g., `~/my-themes/`)
 2. Place your CSS files in that folder (e.g., `mytheme.css`, `custom.css`)
-3. Set the folder path in VS Code settings:
+3. Run **Markdown Preview Themes: Change Themes Folder**, or set the folder path in VS Code settings:
     ```json
     {
         "markdownPreviewThemes.themesFolder": "~/my-themes"
     }
     ```
 
-The extension automatically discovers all `.css` files in that folder and adds them to your theme options. You can then select them in the `markdownPreviewThemes.theme` setting.
+The extension automatically discovers all `.css` files in that folder and adds them to the **Markdown Preview Themes: Select Theme** picker. A custom file with the same name as a built-in theme overrides the built-in theme.
 
 Changes to the folder (adding/removing CSS files) are detected automatically.
 
