@@ -1,0 +1,432 @@
+html:has(#markdown-preview-themes[data-theme="dracula"]) {
+    --dracula-bg: #282a36;
+    --dracula-current-line: #44475a;
+    --dracula-selection: #44475a;
+    --dracula-comment: #6272a4;
+    --dracula-fg: #f8f8f2;
+    --dracula-cyan: #8be9fd;
+    --dracula-green: #50fa7b;
+    --dracula-orange: #ffb86c;
+    --dracula-pink: #ff79c6;
+    --dracula-purple: #bd93f9;
+    --dracula-red: #ff5555;
+    --dracula-yellow: #f1fa8c;
+
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background: var(--dracula-bg);
+}
+
+body:has(#markdown-preview-themes[data-theme="dracula"]) {
+    box-sizing: border-box;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2em;
+
+    background: var(--dracula-bg);
+    color: var(--dracula-fg);
+
+    font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji",
+        "Segoe UI Emoji";
+    font-size: 16px;
+    line-height: 1.6;
+
+    & *,
+    & *::before,
+    & *::after {
+        box-sizing: inherit;
+    }
+
+    /* Links */
+
+    & a {
+        color: var(--dracula-cyan);
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+
+    /* Headings */
+
+    & :is(h1, h2, h3, h4, h5, h6) {
+        margin-top: 1.5em;
+        margin-bottom: 0.5em;
+
+        color: var(--dracula-purple);
+        font-weight: 600;
+        line-height: 1.25;
+    }
+
+    & h1,
+    & h2 {
+        padding-bottom: 0.3em;
+        border-bottom: 1px solid var(--dracula-comment);
+    }
+
+    & h1 {
+        font-size: 2em;
+    }
+
+    & h2 {
+        font-size: 1.5em;
+    }
+
+    & h3 {
+        font-size: 1.25em;
+    }
+
+    & h4 {
+        font-size: 1em;
+    }
+
+    & h5 {
+        font-size: 0.875em;
+    }
+
+    & h6 {
+        font-size: 0.85em;
+    }
+
+    /* Text */
+
+    & p {
+        margin-bottom: 1em;
+    }
+
+    & strong,
+    & b {
+        color: var(--dracula-orange);
+        font-weight: 600;
+    }
+
+    & em,
+    & i {
+        color: var(--dracula-yellow);
+        font-style: italic;
+    }
+
+    & del,
+    & s {
+        color: var(--dracula-red);
+        text-decoration: line-through;
+    }
+
+    & ins {
+        color: var(--dracula-green);
+        text-decoration: underline;
+    }
+
+    & mark {
+        padding: 0.1em 0.2em;
+        background: var(--dracula-yellow);
+        color: var(--dracula-bg);
+    }
+
+    & abbr[title] {
+        border-bottom: 1px dotted var(--dracula-comment);
+        cursor: help;
+        text-decoration: none;
+    }
+
+    & sup,
+    & sub {
+        position: relative;
+        vertical-align: baseline;
+        font-size: 0.75em;
+        line-height: 0;
+    }
+
+    & sup {
+        top: -0.5em;
+    }
+
+    & sub {
+        bottom: -0.25em;
+    }
+
+    /* Horizontal rule */
+
+    & hr {
+        height: 0.25em;
+        margin: 1.5em 0;
+        border: 0;
+        background: var(--dracula-comment);
+    }
+
+    /* Blockquotes */
+
+    & blockquote {
+        margin: 0 0 1em;
+        padding: 0 1em;
+        border-left: 0.25em solid var(--dracula-comment);
+        color: var(--dracula-comment);
+
+        & > :first-child {
+            margin-top: 0;
+        }
+
+        & > :last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    /* Lists */
+
+    & :is(ul, ol) {
+        margin: 0 0 1em;
+        padding-left: 2em;
+    }
+
+    & :is(ul, ol) :is(ul, ol) {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    & :is(ol ol, ul ol) {
+        list-style-type: lower-roman;
+    }
+
+    & :is(ol ol ol, ol ul ol, ul ol ol, ul ul ol) {
+        list-style-type: lower-alpha;
+    }
+
+    & li {
+        margin-bottom: 0.25em;
+
+        & > p {
+            margin-top: 1em;
+        }
+
+        &::marker {
+            color: var(--dracula-pink);
+        }
+    }
+
+    /* Definition lists */
+
+    & dl {
+        margin-bottom: 1em;
+    }
+
+    & dt {
+        margin-top: 1em;
+        font-weight: 700;
+    }
+
+    & dd {
+        margin-left: 2em;
+        margin-bottom: 0.5em;
+    }
+
+    /* Code */
+
+    & :is(code, pre, kbd, samp) {
+        font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, Monaco, "Courier New", monospace;
+    }
+
+    & code {
+        padding: 0.2em 0.4em;
+        border-radius: 3px;
+        background: var(--dracula-current-line);
+        color: var(--dracula-green);
+        font-size: 0.9em;
+    }
+
+    & pre {
+        margin: 0 0 1em;
+        padding: 1em;
+        overflow: auto;
+
+        border: 1px solid var(--dracula-current-line);
+        border-radius: 6px;
+        box-shadow: inset 3px 0 var(--dracula-comment);
+
+        background: var(--dracula-bg);
+        font-size: 0.9em;
+        line-height: 1.45;
+
+        & code {
+            padding: 0;
+            border: 0;
+            background: transparent;
+            color: var(--dracula-fg);
+            font-size: inherit;
+        }
+    }
+
+    /* Syntax highlighting */
+
+    & :is(.hljs-comment, .hljs-quote, .hljs-meta) {
+        color: var(--dracula-comment);
+        font-style: normal;
+    }
+
+    & :is(.hljs-keyword, .hljs-literal, .hljs-name, .hljs-tag, .hljs-selector-tag, .hljs-doctag, .hljs-operator) {
+        color: var(--dracula-pink);
+    }
+
+    & :is(.hljs-string, .hljs-meta-string, .hljs-regexp, .hljs-template-tag) {
+        color: var(--dracula-yellow);
+    }
+
+    & :is(.hljs-number, .hljs-selector-attr, .hljs-selector-pseudo) {
+        color: var(--dracula-purple);
+    }
+
+    &
+        :is(
+            .hljs-class,
+            .hljs-built_in,
+            .hljs-title,
+            .hljs-section,
+            .hljs-type,
+            .hljs-attr,
+            .hljs-attribute,
+            .hljs-builtin-name,
+            .hljs-property,
+            .hljs-selector-id,
+            .hljs-selector-class,
+            .hljs-symbol,
+            .hljs-bullet,
+            .hljs-addition
+        ) {
+        color: var(--dracula-green);
+    }
+
+    & :is(.hljs-variable, .hljs-template-variable, .hljs-link) {
+        color: var(--dracula-cyan);
+    }
+
+    & :is(.hljs-subst, .hljs-params, .hljs-function, .hljs-formula) {
+        color: var(--dracula-fg);
+    }
+
+    /* Tables */
+
+    & table {
+        width: 100%;
+        margin: 0 0 1em;
+        border-collapse: collapse;
+        border-spacing: 0;
+        overflow: auto;
+
+        & th,
+        & td {
+            padding: 0.5em 1em;
+            border: 1px solid var(--dracula-comment);
+        }
+
+        & th {
+            color: var(--dracula-fg);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        & tr {
+            border-top: 1px solid var(--dracula-comment);
+            background: var(--dracula-bg);
+        }
+
+        & thead th {
+            color: var(--dracula-fg);
+            border-bottom: 2px solid var(--dracula-purple);
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        & thead tr {
+            background: #3a3d4d;
+        }
+
+        & tbody tr:nth-child(even) {
+            background: var(--dracula-current-line);
+        }
+    }
+
+    /* Media */
+
+    & img {
+        max-width: 100%;
+        height: auto;
+        border: 0;
+    }
+
+    /* Keyboard keys */
+
+    & kbd {
+        display: inline-block;
+        padding: 0.1em 0.4em;
+
+        border: 1px solid var(--dracula-comment);
+        border-radius: 3px;
+        box-shadow: inset 0 -1px 0 var(--dracula-comment);
+
+        background: var(--dracula-current-line);
+        color: var(--dracula-fg);
+
+        font-size: 0.8em;
+        line-height: 1.4;
+        vertical-align: middle;
+    }
+
+    /* Forms */
+
+    & input[type="checkbox"] {
+        margin-right: 0.5em;
+    }
+
+    /* Details */
+
+    & details {
+        margin-bottom: 1em;
+    }
+
+    & summary {
+        color: var(--dracula-purple);
+        cursor: pointer;
+        font-weight: 600;
+    }
+
+    /* Footnotes */
+
+    & .footnotes {
+        margin-top: 2em;
+        padding-top: 1em;
+        border-top: 1px solid var(--dracula-comment);
+
+        color: var(--dracula-comment);
+        font-size: 0.9em;
+    }
+
+    /* Selection */
+
+    &::selection,
+    & ::selection {
+        background: var(--dracula-selection);
+        color: var(--dracula-fg);
+    }
+}
+
+@media print {
+    body:has(#markdown-preview-themes[data-theme="dracula"]) {
+        background: white;
+        color: black;
+
+        & a {
+            color: #0066cc;
+        }
+
+        & :is(pre, code) {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        & :is(table, pre) {
+            break-inside: avoid;
+        }
+    }
+}

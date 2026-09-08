@@ -1,0 +1,55 @@
+{
+    "name": "markdown-preview-themes",
+    "displayName": "Markdown Preview Themes",
+    "description": "Switch prebuilt themes for VS Code's built-in Markdown preview.",
+    "version": "0.0.1",
+    "publisher": "Amrakk",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Amrakk/markdown-preview-themes"
+    },
+    "keywords": [
+        "markdown",
+        "preview",
+        "theme",
+        "dracula",
+        "dark-theme"
+    ],
+    "main": "./extension.js",
+    "activationEvents": [
+        "onLanguage:markdown",
+        "onCommand:markdown.showPreview"
+    ],
+    "engines": {
+        "vscode": ">=1.90.0"
+    },
+    "categories": [
+        "Themes"
+    ],
+    "contributes": {
+        "configuration": {
+            "title": "Markdown Preview Themes",
+            "properties": {
+                "markdownPreviewThemes.theme": {
+                    "type": "string",
+                    "default": "vscode",
+                    "enum": [
+                        "vscode",
+                        "dracula"
+                    ],
+                    "description": "Theme used by the Markdown preview."
+                },
+                "markdownPreviewThemes.themesFolder": {
+                    "type": "string",
+                    "description": "Path to folder containing custom theme CSS files. The extension will load all .css files from this folder.",
+                    "scope": "window"
+                }
+            }
+        },
+        "markdown.previewStyles": [
+            "./themes/dracula.css"
+        ],
+        "markdown.markdownItPlugins": true
+    }
+}
