@@ -1,8 +1,55 @@
-"use strict";
+import { HOOKS, resolveHook, type HookId } from "./index";
 
-const { HOOKS, resolveHook } = require("./index");
+export interface ConfigurationTargetValues {
+    readonly Global: ConfigurationTarget;
+    readonly Workspace: ConfigurationTarget;
+    readonly WorkspaceFolder: ConfigurationTarget;
+}
 
-function getConfigurationValueAtTarget(configuration, setting, target, vscode) {
+export type ConfigurationTarget = number;
+
+export interface ConfigurationLike {
+    get<T>(setting: string, fallback: T): T;
+    inspect(setting: string): ConfigurationInspection | undefined;
+    update(setting: string, value: unknown, target: ConfigurationTarget): PromiseLike<void>;
+}
+
+interface ConfigurationInspection {
+    readonly globalValue?: unknown;
+    readonly workspaceValue?: unknown;
+    readonly workspaceFolderValue?: unknown;
+}
+
+interface QuickPickChoice {
+    readonly label: string;
+    readonly description: string;
+    readonly hookId: "auto" | "none" | HookId;
+}
+
+interface ScopeChoice {
+    readonly label: string;
+    readonly description?: string;
+    readonly scope: "theme" | "default" | "cancel";
+}
+
+export interface VscodeLike {
+    readonly ConfigurationTarget: ConfigurationTargetValues;
+    readonly window: {
+        showQuickPick<T>(items: readonly T[], options: { placeHolder: string }): PromiseLike<T | undefined>;
+        showInformationMessage(message: string): unknown;
+        showErrorMessage(message: string): unknown;
+    };
+    readonly commands: {
+        executeCommand(command: string): unknown;
+    };
+}
+
+function getConfigurationValueAtTarget(
+    configuration: ConfigurationLike,
+    setting: string,
+    target: ConfigurationTarget,
+    vscode: VscodeLike,
+): unknown {
     const inspected = configuration.inspect(setting);
     if (!inspected) return undefined;
     if (target === vscode.ConfigurationTarget.WorkspaceFolder) return inspected.workspaceFolderValue;
@@ -10,18 +57,27 @@ function getConfigurationValueAtTarget(configuration, setting, target, vscode) {
     return inspected.globalValue;
 }
 
-function isSettingsObject(value) {
+function isSettingsObject(value: unknown): value is Record<string, unknown> {
     return value !== null && typeof value === "object" && !Array.isArray(value);
 }
 
-function getThemeHooksForTarget(configuration, target, vscode) {
+function getThemeHooksForTarget(
+    configuration: ConfigurationLike,
+    target: ConfigurationTarget,
+    vscode: VscodeLike,
+): Record<string, unknown> {
     const value = getConfigurationValueAtTarget(configuration, "themeHooks", target, vscode);
     return isSettingsObject(value) ? { ...value } : {};
 }
 
-function getThemeHookOverrideTarget(configuration, theme, getConfigurationTarget, vscode) {
+function getThemeHookOverrideTarget(
+    configuration: ConfigurationLike,
+    theme: string,
+    getConfigurationTarget: (configuration: ConfigurationLike, setting: string) => ConfigurationTarget,
+    vscode: VscodeLike,
+): ConfigurationTarget {
     const inspected = configuration.inspect("themeHooks");
-    const scopes = [
+    const scopes: [ConfigurationTarget, unknown][] = [
         [vscode.ConfigurationTarget.WorkspaceFolder, inspected?.workspaceFolderValue],
         [vscode.ConfigurationTarget.Workspace, inspected?.workspaceValue],
         [vscode.ConfigurationTarget.Global, inspected?.globalValue],
@@ -32,7 +88,7 @@ function getThemeHookOverrideTarget(configuration, theme, getConfigurationTarget
     return getConfigurationTarget(configuration, "themeHooks");
 }
 
-function describeHookResolution(theme, themeHooks, defaultHook) {
+function describeHookResolution(theme: string, themeHooks: unknown, defaultHook: unknown): string {
     const hook = resolveHook(theme, themeHooks, defaultHook);
     const hasOverride =
         isSettingsObject(themeHooks) && Object.prototype.hasOwnProperty.call(themeHooks, theme);
@@ -43,10 +99,15 @@ function describeHookResolution(theme, themeHooks, defaultHook) {
     return "no hook";
 }
 
-async function configureHook(vscode, theme, configuration, getConfigurationTarget) {
-    const themeHooks = configuration.get("themeHooks", {});
-    const defaultHook = configuration.get("defaultHook", "auto");
-    const choices = [
+export async function configureHook(
+    vscode: VscodeLike,
+    theme: string,
+    configuration: ConfigurationLike,
+    getConfigurationTarget: (configuration: ConfigurationLike, setting: string) => ConfigurationTarget,
+): Promise<void> {
+    const themeHooks = configuration.get<unknown>("themeHooks", {});
+    const defaultHook = configuration.get<unknown>("defaultHook", "auto");
+    const choices: QuickPickChoice[] = [
         {
             label: "Automatic (Recommended)",
             description: `Remove this theme's override. Currently: ${describeHookResolution(
@@ -100,7 +161,7 @@ async function configureHook(vscode, theme, configuration, getConfigurationTarge
         return;
     }
 
-    const scope = await vscode.window.showQuickPick(
+    const scope = await vscode.window.showQuickPick<ScopeChoice>(
         [
             {
                 label: `Only “${theme}” (Recommended)`,
@@ -160,5 +221,3 @@ async function configureHook(vscode, theme, configuration, getConfigurationTarge
         void vscode.window.showErrorMessage(`Failed to configure the hook for “${theme}”: ${message}`);
     }
 }
-
-module.exports = { configureHook };

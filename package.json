@@ -17,7 +17,17 @@
         "github",
         "dark-theme"
     ],
-    "main": "./extension.js",
+    "scripts": {
+        "check:types": "tsc --noEmit",
+        "build": "node esbuild.mjs",
+        "watch": "node esbuild.mjs --watch",
+        "package": "npm run check:types && node esbuild.mjs --production",
+        "vscode:prepublish": "npm run package"
+    },
+    "main": "./dist/extension.js",
+    "vsce": {
+        "dependencies": false
+    },
     "activationEvents": [
         "onLanguage:markdown",
         "onCommand:markdown.showPreview"
@@ -98,5 +108,14 @@
             "./hooks/github/base.css"
         ],
         "markdown.markdownItPlugins": true
+    },
+    "devDependencies": {
+        "@types/markdown-it": "^14.2.0",
+        "@types/node": "^22.20.2",
+        "@types/vscode": "^1.90.0",
+        "@vscode/vsce": "^3.9.2",
+        "esbuild": "^0.28.2",
+        "markdown-it": "^15.0.2",
+        "typescript": "^7.0.2"
     }
 }

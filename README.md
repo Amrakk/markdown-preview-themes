@@ -23,11 +23,12 @@ Add your own CSS themes by pointing to a folder:
 1. Create a folder with your custom theme CSS files (e.g., `~/my-themes/`)
 2. Place your CSS files in that folder (e.g., `mytheme.css`, `custom.css`)
 3. Run **Markdown Preview Themes: Change Themes Folder**, or set the folder path in VS Code settings:
-    ```json
-    {
-        "markdownPreviewThemes.themesFolder": "~/my-themes"
-    }
-    ```
+
+```json
+{
+    "markdownPreviewThemes.themesFolder": "~/my-themes"
+}
+```
 
 The extension automatically discovers all `.css` files in that folder and adds them to the **Markdown Preview Themes: Select Theme** picker. A custom file with the same name as a built-in theme overrides the built-in theme.
 
