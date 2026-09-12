@@ -79,4 +79,4 @@ function install(markdownIt) {
     };
 }
 
-module.exports = { install, transform };
+module.exports = { id: "github", label: "GitHub", install, transform };

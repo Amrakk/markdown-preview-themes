@@ -1,0 +1,117 @@
+/* GitHub hook CSS. The theme owns the page; this file owns alert markup only. */
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert) {
+  /* Private palette fallbacks; documented hook variables and inherited theme
+     variables take precedence in the declarations below. */
+  --markdown-preview-themes-github-alert-note-border-default: #0969da;
+  --markdown-preview-themes-github-alert-note-default: #0969da;
+  --markdown-preview-themes-github-alert-important-border-default: #8250df;
+  --markdown-preview-themes-github-alert-important-default: #8250df;
+  --markdown-preview-themes-github-alert-warning-border-default: #9a6700;
+  --markdown-preview-themes-github-alert-warning-default: #9a6700;
+  --markdown-preview-themes-github-alert-tip-border-default: #1a7f37;
+  --markdown-preview-themes-github-alert-tip-default: #1a7f37;
+  --markdown-preview-themes-github-alert-caution-border-default: #cf222e;
+  --markdown-preview-themes-github-alert-caution-default: #cf222e;
+  padding: var(--markdown-preview-themes-github-alert-padding, var(--base-size-8, 0.5rem) var(--base-size-16, 1rem));
+  margin-bottom: var(--markdown-preview-themes-github-alert-margin-bottom, var(--base-size-16, 1rem));
+  color: inherit;
+  border-left: var(--markdown-preview-themes-github-alert-border-width, 0.25em) solid
+    var(--markdown-preview-themes-github-alert-border-color, var(--borderColor-default, currentColor));
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert > :first-child) {
+  margin-top: 0;
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert > :last-child) {
+  margin-bottom: 0;
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert .markdown-alert-title) {
+  display: flex;
+  align-items: center;
+  font-weight: var(--markdown-preview-themes-github-alert-title-weight, var(--base-text-weight-medium, 500));
+  line-height: var(--markdown-preview-themes-github-alert-title-line-height, 1);
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert .octicon) {
+  display: inline-block;
+  overflow: visible;
+  vertical-align: text-bottom;
+  fill: currentColor;
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert .mr-2) {
+  margin-right: var(--markdown-preview-themes-github-alert-icon-gap, var(--base-size-8, 0.5rem));
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-note) {
+  border-left-color: var(
+    --markdown-preview-themes-github-alert-note-border-color,
+    var(--borderColor-accent-emphasis, var(--markdown-preview-themes-github-alert-note-border-default, #0969da))
+  );
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-note .markdown-alert-title) {
+  color: var(--markdown-preview-themes-github-alert-note-color, var(--fgColor-accent, var(--markdown-preview-themes-github-alert-note-default, #0969da)));
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-important) {
+  border-left-color: var(
+    --markdown-preview-themes-github-alert-important-border-color,
+    var(--borderColor-done-emphasis, var(--markdown-preview-themes-github-alert-important-border-default, #8250df))
+  );
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-important .markdown-alert-title) {
+  color: var(--markdown-preview-themes-github-alert-important-color, var(--fgColor-done, var(--markdown-preview-themes-github-alert-important-default, #8250df)));
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-warning) {
+  border-left-color: var(
+    --markdown-preview-themes-github-alert-warning-border-color,
+    var(--borderColor-attention-emphasis, var(--markdown-preview-themes-github-alert-warning-border-default, #9a6700))
+  );
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-warning .markdown-alert-title) {
+  color: var(--markdown-preview-themes-github-alert-warning-color, var(--fgColor-attention, var(--markdown-preview-themes-github-alert-warning-default, #9a6700)));
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-tip) {
+  border-left-color: var(
+    --markdown-preview-themes-github-alert-tip-border-color,
+    var(--borderColor-success-emphasis, var(--markdown-preview-themes-github-alert-tip-border-default, #1a7f37))
+  );
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-tip .markdown-alert-title) {
+  color: var(--markdown-preview-themes-github-alert-tip-color, var(--fgColor-success, var(--markdown-preview-themes-github-alert-tip-default, #1a7f37)));
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-caution) {
+  border-left-color: var(
+    --markdown-preview-themes-github-alert-caution-border-color,
+    var(--borderColor-danger-emphasis, var(--markdown-preview-themes-github-alert-caution-border-default, #cf222e))
+  );
+}
+
+:where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert.markdown-alert-caution .markdown-alert-title) {
+  color: var(--markdown-preview-themes-github-alert-caution-color, var(--fgColor-danger, var(--markdown-preview-themes-github-alert-caution-default, #cf222e)));
+}
+
+@media (prefers-color-scheme: dark) {
+  :where(body:has(#markdown-preview-themes[data-hook="github"]) .markdown-alert) {
+    --markdown-preview-themes-github-alert-note-border-default: #4493f8;
+    --markdown-preview-themes-github-alert-note-default: #4493f8;
+    --markdown-preview-themes-github-alert-important-border-default: #ab7df8;
+    --markdown-preview-themes-github-alert-important-default: #ab7df8;
+    --markdown-preview-themes-github-alert-warning-border-default: #d29922;
+    --markdown-preview-themes-github-alert-warning-default: #d29922;
+    --markdown-preview-themes-github-alert-tip-border-default: #3fb950;
+    --markdown-preview-themes-github-alert-tip-default: #3fb950;
+    --markdown-preview-themes-github-alert-caution-border-default: #f85149;
+    --markdown-preview-themes-github-alert-caution-default: #f85149;
+  }
+}

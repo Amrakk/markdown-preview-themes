@@ -184,7 +184,7 @@ body:has(#markdown-preview-themes[data-theme="github"]) summary {
 }
 
 body:has(#markdown-preview-themes[data-theme="github"]) [hidden] {
-  display: none !important;
+  display: none;
 }
 
 body:has(#markdown-preview-themes[data-theme="github"]) a {
@@ -494,7 +494,7 @@ body:has(#markdown-preview-themes[data-theme="github"]) pre {
 
 body:has(#markdown-preview-themes[data-theme="github"]) .octicon {
   display: inline-block;
-  overflow: visible !important;
+  overflow: visible;
   vertical-align: text-bottom;
   fill: currentColor;
 }
@@ -506,7 +506,7 @@ body:has(#markdown-preview-themes[data-theme="github"]) input::-webkit-inner-spi
 }
 
 body:has(#markdown-preview-themes[data-theme="github"]) .mr-2 {
-  margin-right: var(--base-size-8, 8px) !important;
+  margin-right: var(--base-size-8, 8px);
 }
 
 body:has(#markdown-preview-themes[data-theme="github"])::before {
@@ -521,11 +521,11 @@ body:has(#markdown-preview-themes[data-theme="github"])::after {
 }
 
 body:has(#markdown-preview-themes[data-theme="github"])>*:first-child {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 
 body:has(#markdown-preview-themes[data-theme="github"])>*:last-child {
-  margin-bottom: 0 !important;
+  margin-bottom: 0;
 }
 
 body:has(#markdown-preview-themes[data-theme="github"]) a:not([href]) {
@@ -1111,7 +1111,7 @@ body:has(#markdown-preview-themes[data-theme="github"]) g-emoji {
   min-width: 1ch;
   font-family: "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   font-size: 1em;
-  font-style: normal !important;
+  font-style: normal;
   font-weight: var(--base-text-weight-normal, 400);
   line-height: 1;
   vertical-align: -0.075em;
@@ -1181,70 +1181,8 @@ body:has(#markdown-preview-themes[data-theme="github"]) ::-webkit-calendar-picke
   filter: invert(50%);
 }
 
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert {
-  padding: var(--base-size-8) var(--base-size-16);
-  margin-bottom: var(--base-size-16);
-  color: inherit;
-  border-left: .25em solid var(--borderColor-default);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert>:first-child {
-  margin-top: 0;
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert>:last-child {
-  margin-bottom: 0;
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert .markdown-alert-title {
-  display: flex;
-  font-weight: var(--base-text-weight-medium, 500);
-  align-items: center;
-  line-height: 1;
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-note {
-  border-left-color: var(--borderColor-accent-emphasis);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-note .markdown-alert-title {
-  color: var(--fgColor-accent);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-important {
-  border-left-color: var(--borderColor-done-emphasis);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-important .markdown-alert-title {
-  color: var(--fgColor-done);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-warning {
-  border-left-color: var(--borderColor-attention-emphasis);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-warning .markdown-alert-title {
-  color: var(--fgColor-attention);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-tip {
-  border-left-color: var(--borderColor-success-emphasis);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-tip .markdown-alert-title {
-  color: var(--fgColor-success);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-caution {
-  border-left-color: var(--borderColor-danger-emphasis);
-}
-
-body:has(#markdown-preview-themes[data-theme="github"]) .markdown-alert.markdown-alert-caution .markdown-alert-title {
-  color: var(--fgColor-danger);
-}
-
 body:has(#markdown-preview-themes[data-theme="github"])>*:first-child>.heading-element:first-child {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 
 body:has(#markdown-preview-themes[data-theme="github"]) .highlight pre:has(+.zeroclipboard-container) {
@@ -1266,7 +1204,7 @@ body:has(#markdown-preview-themes[data-theme="github"]) {
 }
 
 body:has(#markdown-preview-themes[data-theme="github"])>#markdown-preview-themes+* {
-  margin-top: 0 !important;
+  margin-top: 0;
 }
 
 body:has(#markdown-preview-themes[data-theme="github"]) .code-block-copy-button {

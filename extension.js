@@ -4,16 +4,26 @@ const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
-const { installThemeHooks, renderWithThemeHooks } = require("./hooks");
+const {
+    installThemeHooks,
+    renderWithThemeHooks,
+    resolveHook,
+} = require("./hooks");
+const { configureHook } = require("./hooks/configure");
 const manifest = require("./package.json");
 
 const THEME_SETTING = "markdownPreviewThemes.theme";
+const THEME_HOOKS_SETTING = "markdownPreviewThemes.themeHooks";
+const DEFAULT_HOOK_SETTING = "markdownPreviewThemes.defaultHook";
 const FOLDER_SETTING = "markdownPreviewThemes.themesFolder";
 const SELECT_THEME_COMMAND = "markdownPreviewThemes.selectTheme";
 const CHANGE_FOLDER_COMMAND = "markdownPreviewThemes.changeThemesFolder";
+const CONFIGURE_HOOK_COMMAND = "markdownPreviewThemes.configureHook";
 const BUILTIN_THEMES = new Set([
     "vscode",
-    ...manifest.contributes["markdown.previewStyles"].map((file) => path.basename(file, path.extname(file))),
+    ...manifest.contributes["markdown.previewStyles"]
+        .filter((file) => file.startsWith("./themes/"))
+        .map((file) => path.basename(file, path.extname(file))),
 ]);
 
 let customThemes = new Set();
@@ -85,9 +95,7 @@ async function selectTheme() {
     updateThemes();
 
     const configuration = vscode.workspace.getConfiguration("markdownPreviewThemes");
-    const configuredTheme = configuration.get("theme", "vscode");
-    const currentTheme =
-        BUILTIN_THEMES.has(configuredTheme) || customThemes.has(configuredTheme) ? configuredTheme : "vscode";
+    const currentTheme = getCurrentTheme(configuration);
     const items = [...new Set([...BUILTIN_THEMES, ...customThemes])]
         .sort((a, b) => a.localeCompare(b))
         .map((label) => ({
@@ -124,6 +132,22 @@ function getConfigurationTarget(configuration, setting) {
         : inspected?.workspaceValue !== undefined
           ? vscode.ConfigurationTarget.Workspace
           : vscode.ConfigurationTarget.Global;
+}
+
+function getCurrentTheme(configuration) {
+    const configuredTheme = configuration.get("theme", "vscode");
+    return BUILTIN_THEMES.has(configuredTheme) || customThemes.has(configuredTheme) ? configuredTheme : "vscode";
+}
+
+function refreshPreview() {
+    void vscode.commands.executeCommand("markdown.preview.refresh");
+}
+
+async function configureCurrentHook() {
+    updateThemes();
+    const configuration = vscode.workspace.getConfiguration("markdownPreviewThemes");
+    const theme = getCurrentTheme(configuration);
+    await configureHook(vscode, theme, configuration, getConfigurationTarget);
 }
 
 async function changeThemesFolder() {
@@ -187,6 +211,7 @@ function activate(context) {
     context.subscriptions.push({ dispose: () => watcher?.close() });
     context.subscriptions.push(vscode.commands.registerCommand(SELECT_THEME_COMMAND, selectTheme));
     context.subscriptions.push(vscode.commands.registerCommand(CHANGE_FOLDER_COMMAND, changeThemesFolder));
+    context.subscriptions.push(vscode.commands.registerCommand(CONFIGURE_HOOK_COMMAND, configureCurrentHook));
 
     // Watch for configuration changes
     context.subscriptions.push(
@@ -194,8 +219,12 @@ function activate(context) {
             if (event.affectsConfiguration(FOLDER_SETTING)) {
                 watchThemesFolder();
                 void vscode.commands.executeCommand("markdown.preview.refresh");
-            } else if (event.affectsConfiguration(THEME_SETTING)) {
-                void vscode.commands.executeCommand("markdown.preview.refresh");
+            } else if (
+                event.affectsConfiguration(THEME_SETTING) ||
+                event.affectsConfiguration(THEME_HOOKS_SETTING) ||
+                event.affectsConfiguration(DEFAULT_HOOK_SETTING)
+            ) {
+                refreshPreview();
             }
         }),
     );
@@ -205,11 +234,15 @@ function activate(context) {
             installThemeHooks(markdownIt);
             const render = markdownIt.renderer.render.bind(markdownIt.renderer);
             markdownIt.renderer.render = (tokens, options, env) => {
-                const configured = vscode.workspace.getConfiguration("markdownPreviewThemes").get("theme", "vscode");
+                const configuration = vscode.workspace.getConfiguration("markdownPreviewThemes");
+                const configured = configuration.get("theme", "vscode");
+                const themeHooks = configuration.get("themeHooks", {});
+                const defaultHook = configuration.get("defaultHook", "auto");
 
                 // Validate theme exists (builtin or custom)
                 const isValidTheme = BUILTIN_THEMES.has(configured) || customThemes.has(configured);
                 const theme = isValidTheme ? configured : "vscode";
+                const hook = resolveHook(theme, themeHooks, defaultHook);
 
                 // Inject custom theme CSS if needed
                 let styleTag = "";
@@ -224,12 +257,16 @@ function activate(context) {
                     }
                 }
 
+                const markerHook = hook ? ` data-hook="${hook.id.replaceAll("&", "&amp;").replaceAll('"', "&quot;")}"` : "";
+
                 return (
-                    styleTag +
                     '<span id="markdown-preview-themes" data-theme="' +
                     markerTheme.replaceAll("&", "&amp;").replaceAll('"', "&quot;") +
-                    '" hidden></span>\n' +
-                    renderWithThemeHooks(theme, markdownIt, render, tokens, options, env)
+                    '"' +
+                    markerHook +
+                    ' hidden></span>\n' +
+                    renderWithThemeHooks(theme, markdownIt, render, tokens, options, env, themeHooks, defaultHook) +
+                    styleTag
                 );
             };
             return markdownIt;

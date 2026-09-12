@@ -45,6 +45,28 @@ body:has(#markdown-preview-themes[data-theme="mytheme"]) {
 }
 ```
 
+Custom theme CSS is applied after bundled styles, so your CSS can override them.
+
+### Selecting a Hook
+
+Hooks add optional Markdown features to a theme. To choose one:
+
+1. Select the theme you want to configure.
+2. Run **Markdown Preview Themes: Configure Hook for Current Theme** from the
+   Command Palette.
+3. Choose a built-in hook, **No hook**, or **Automatic**.
+4. Apply the choice only to the current theme or use it as the default for
+   themes without their own selection.
+
+**Automatic** uses the hook with the same name as the selected theme when one
+exists. Your selection is saved and applied whenever the Markdown preview is
+refreshed.
+
+### Built-in Hooks
+
+- [GitHub](hooks/github/README.md) — Adds GitHub-style alert blocks such as
+  `[!NOTE]`, `[!TIP]`, and `[!WARNING]`.
+
 ## Requirements
 
 - VS Code 1.90.0 or later

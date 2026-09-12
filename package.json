@@ -37,6 +37,10 @@
             {
                 "command": "markdownPreviewThemes.changeThemesFolder",
                 "title": "Markdown Preview Themes: Change Themes Folder"
+            },
+            {
+                "command": "markdownPreviewThemes.configureHook",
+                "title": "Markdown Preview Themes: Configure Hook for Current Theme"
             }
         ],
         "configuration": {
@@ -51,12 +55,47 @@
                     "type": "string",
                     "description": "Path to a folder containing custom theme CSS files. Use the Markdown Preview Themes: Change Themes Folder command to select it.",
                     "scope": "window"
+                },
+                "markdownPreviewThemes.defaultHook": {
+                    "type": "string",
+                    "default": "auto",
+                    "enum": [
+                        "auto",
+                        "none",
+                        "github"
+                    ],
+                    "markdownDescription": "Default Markdown hook for themes without a per-theme override. **Automatic** uses a same-name hook when one exists.",
+                    "scope": "window"
+                },
+                "markdownPreviewThemes.themeHooks": {
+                    "type": "object",
+                    "default": {},
+                    "markdownDescription": "Map **Theme Name** to **Hook ID**, or use **none** to disable hooks. Per-theme choices override the default. User JavaScript cannot be loaded.",
+                    "propertyNames": {
+                        "type": "string",
+                        "minLength": 1,
+                        "title": "Theme Name"
+                    },
+                    "additionalProperties": {
+                        "title": "Hook ID",
+                        "type": "string",
+                        "enum": [
+                            "none",
+                            "github"
+                        ],
+                        "enumItemLabels": [
+                            "None",
+                            "GitHub"
+                        ]
+                    },
+                    "scope": "window"
                 }
             }
         },
         "markdown.previewStyles": [
             "./themes/dracula.css",
-            "./themes/github.css"
+            "./themes/github.css",
+            "./hooks/github/base.css"
         ],
         "markdown.markdownItPlugins": true
     }
