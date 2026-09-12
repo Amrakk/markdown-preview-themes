@@ -4,6 +4,7 @@ const vscode = require("vscode");
 const fs = require("fs");
 const os = require("os");
 const path = require("path");
+const { installThemeHooks, renderWithThemeHooks } = require("./hooks");
 const manifest = require("./package.json");
 
 const THEME_SETTING = "markdownPreviewThemes.theme";
@@ -201,6 +202,7 @@ function activate(context) {
 
     return {
         extendMarkdownIt(markdownIt) {
+            installThemeHooks(markdownIt);
             const render = markdownIt.renderer.render.bind(markdownIt.renderer);
             markdownIt.renderer.render = (tokens, options, env) => {
                 const configured = vscode.workspace.getConfiguration("markdownPreviewThemes").get("theme", "vscode");
@@ -227,7 +229,7 @@ function activate(context) {
                     '<span id="markdown-preview-themes" data-theme="' +
                     markerTheme.replaceAll("&", "&amp;").replaceAll('"', "&quot;") +
                     '" hidden></span>\n' +
-                    render(tokens, options, env)
+                    renderWithThemeHooks(theme, markdownIt, render, tokens, options, env)
                 );
             };
             return markdownIt;
