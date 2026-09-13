@@ -1,0 +1,29 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Read package version and verify tag
+        id: version
+        run: node -e "const fs = require('fs'), version = require('./package.json').version, expected = 'v' + version; if (process.env.GITHUB_REF_NAME !== expected) throw new Error('Expected tag ' + expected); fs.appendFileSync(process.env.GITHUB_OUTPUT, 'value=' + version + '\n')"
+      - name: Package extension
+        run: npx vsce package --no-dependencies --out "markdown-preview-themes-${{ steps.version.outputs.value }}.vsix"
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" "markdown-preview-themes-${{ steps.version.outputs.value }}.vsix" --verify-tag --generate-notes

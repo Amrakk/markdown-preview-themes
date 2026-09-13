@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Read package version
+        id: version
+        run: node -e "require('fs').appendFileSync(process.env.GITHUB_OUTPUT, 'value=' + require('./package.json').version + '\n')"
+      - name: Package extension
+        run: npx vsce package --no-dependencies --out "markdown-preview-themes-${{ steps.version.outputs.value }}.vsix"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: markdown-preview-themes-${{ steps.version.outputs.value }}
+          path: markdown-preview-themes-${{ steps.version.outputs.value }}.vsix
+          if-no-files-found: error
+          retention-days: 14
